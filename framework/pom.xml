@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.andresolarte.mesos</groupId>
+    <version>1.0</version>
+    <artifactId>framework</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Mesos Framework Test Harness</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <exec.mainClass>com.andresolarte.mesos.framework.TestFramework</exec.mainClass>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.mesos</groupId>
+            <artifactId>mesos</artifactId>
+            <version>0.28.0</version>
+        </dependency>
+    </dependencies>
+    <build>
+    <plugins>
+
+    <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>java</goal>
+                </goals>
+            </execution>
+        </executions>
+        <configuration>
+            <mainClass>com.andresolarte.mesos.framework.TestFramework</mainClass>
+            <arguments>
+                <argument>--master=127.0.0.1:5050</argument>
+
+            </arguments>
+        </configuration>
+    </plugin>
+    </plugins>
+    </build>
+
+</project>
