@@ -14,10 +14,12 @@ These commands will:
 * The output will printed shortly before the framework finishes executing
 
 
+
     mvn package
     cd vm
     vagrant up
     vagrant ssh -c "/vagrant/run-framework"
+
     
 
 The final output will look like this:
