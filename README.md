@@ -18,6 +18,7 @@ These commands will:
     cd vm
     vagrant up
     vagrant ssh -c "/vagrant/run-framework"
+    
 
 The final output will look like this:
 
