@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sudo rm -rf /tmp/mesos2
+sudo mkdir /tmp/mesos2
+sudo mesos-slave --master=127.0.0.1:5050 --port=5052 --work_dir=/tmp/mesos2

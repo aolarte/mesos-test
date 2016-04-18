@@ -23,31 +23,50 @@
             <groupId>org.apache.mesos</groupId>
             <artifactId>mesos</artifactId>
             <version>0.28.0</version>
+            <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
     </dependencies>
+
     <build>
-    <plugins>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <outputDirectory>../vm</outputDirectory>
+                </configuration>
+            </plugin>
 
-    <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <executions>
-            <execution>
-                <goals>
-                    <goal>java</goal>
-                </goals>
-            </execution>
-        </executions>
-        <configuration>
-            <mainClass>com.andresolarte.mesos.framework.TestFramework</mainClass>
-            <arguments>
-                <argument>--master=127.0.0.1:5050</argument>
-
-            </arguments>
-        </configuration>
-    </plugin>
-    </plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>../vm</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <excludeScope>provided</excludeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
+
 
 </project>

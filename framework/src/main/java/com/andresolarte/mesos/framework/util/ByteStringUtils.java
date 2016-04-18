@@ -1,4 +1,4 @@
-package com.andresolarte.mesos.framework;
+package com.andresolarte.mesos.framework.util;
 
 import com.google.protobuf.ByteString;
 

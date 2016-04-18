@@ -1,0 +1,3 @@
+#!/bin/sh
+
+java -cp /vagrant/framework-1.0.jar:/vagrant/protobuf-java-2.5.0.jar:/usr/share/java/mesos-0.28.1.jar com.andresolarte.mesos.framework.TestFramework 127.0.0.1:5050

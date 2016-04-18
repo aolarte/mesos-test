@@ -1,0 +1,7 @@
+#!/bin/sh
+#java -cp framework-1.0.jar:protobuf-java-2.5.0.jar:/usr/share/java/mesos-0.28.0.jar com.andresolarte.mesos.framework.TestExecutor
+exec java -cp /vagrant/framework-1.0.jar:/vagrant/protobuf-java-2.5.0.jar:/usr/share/java/mesos-0.28.1.jar \
+  com.andresolarte.mesos.framework.TestExecutor "${@}"
+
+#  -Djava.library.path=${MESOS_BUILD_DIR}/src/.libs \
+#  TestExecutor "${@}"

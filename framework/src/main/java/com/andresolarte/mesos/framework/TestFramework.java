@@ -11,16 +11,26 @@ import org.apache.mesos.Scheduler;
 import java.io.File;
 import java.util.logging.Logger;
 
+/**
+ * The Framework provides the entry point into the system. It will connect to the Mesos master,
+ * and set up the all of the pieces:
+ * <ul>
+ *     <li>Scheduler: manages tasks, and assigns them based on the offers that come in from avaialbe resources</li>
+ *     <li>Executor: the process that will actually execute the task</li>
+ *     <li>Driver: establishes the connection with the Mesos master, allowing the Scheduler to hook in to the Mesos cluster.</li>
+ * </ul>
+ * The framework class doesn't implement any Mesos specific interfaces, and is run like a normal java application with a main method (in production it would be run as a service).
+ */
 public class TestFramework {
     private final static Logger LOGGER = Logger.getLogger(TestFramework.class.getName());
 
     private static void usage() {
         String name = TestFramework.class.getName();
-        System.err.println("Usage: " + name + " master <tasks>");
+        System.err.println("Usage: " + name + " master");
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length < 1 || args.length > 2) {
+        if (args.length !=1) {
             usage();
             System.exit(1);
         }
@@ -46,9 +56,7 @@ public class TestFramework {
             implicitAcknowledgements = false;
         }
 
-        Scheduler scheduler = args.length == 1
-                ? new TestScheduler(implicitAcknowledgements, executor)
-                : new TestScheduler(implicitAcknowledgements, executor, Integer.parseInt(args[1]));
+        Scheduler scheduler =  new TestScheduler(implicitAcknowledgements, executor);
 
         MesosSchedulerDriver driver = null;
 
@@ -60,16 +68,6 @@ public class TestFramework {
 
         // Ensure that the driver process terminates.
         driver.stop();
-
-        // For this test to pass reliably on some platforms, this sleep is
-        // required to ensure that the SchedulerDriver teardown is complete
-        // before the JVM starts running native object destructors after
-        // System.exit() is called. 500ms proved successful in test runs,
-        // but on a heavily loaded machine it might not.
-        // TODO(greg): Ideally, we would inspect the status of the driver
-        // and its associated tasks via the Java API and wait until their
-        // teardown is complete to exit.
-        Thread.sleep(500);
 
         System.exit(status);
     }

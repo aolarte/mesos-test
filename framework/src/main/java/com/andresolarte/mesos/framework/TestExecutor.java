@@ -1,5 +1,6 @@
 package com.andresolarte.mesos.framework;
 
+import com.andresolarte.mesos.framework.logic.LargestProductFinder;
 import org.apache.mesos.Executor;
 import org.apache.mesos.ExecutorDriver;
 import org.apache.mesos.MesosExecutorDriver;
@@ -12,7 +13,10 @@ import org.apache.mesos.Protos.TaskInfo;
 
 import java.util.logging.Logger;
 
-
+/**
+ * The Executor is tha class that actually does the job that the framework initiates.
+ * There will be one Executor per slave node.
+ */
 public class TestExecutor implements Executor {
     private final static Logger LOGGER = Logger.getLogger(TestExecutor.class.getName());
 

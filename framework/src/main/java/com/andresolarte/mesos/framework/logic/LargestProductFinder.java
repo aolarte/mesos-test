@@ -1,5 +1,9 @@
-package com.andresolarte.mesos.framework;
+package com.andresolarte.mesos.framework.logic;
 
+import com.andresolarte.mesos.framework.TestExecutor;
+import com.andresolarte.mesos.framework.dto.Request;
+import com.andresolarte.mesos.framework.dto.Result;
+import com.andresolarte.mesos.framework.util.ByteStringUtils;
 import org.apache.mesos.ExecutorDriver;
 import org.apache.mesos.Protos;
 
@@ -11,7 +15,11 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
-class LargestProductFinder implements Runnable {
+/**
+ * This will do the actual calculation of a small slice of the problem. The result is sent back inside a status update.
+ * This is invoked by the Executor class on each node.
+ */
+public class LargestProductFinder implements Runnable {
     private final static Logger LOGGER = Logger.getLogger(TestExecutor.class.getName());
 
     private final Protos.TaskInfo task;

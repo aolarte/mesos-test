@@ -1,7 +1,11 @@
-package com.andresolarte.mesos.framework;
+package com.andresolarte.mesos.framework.dto;
 
 import java.io.Serializable;
 
+
+/**
+ * Simple DTO for a slave to send the result of its calculation.
+ */
 public class Result implements Serializable {
     private long total = 1;
     private String digitSequence;
