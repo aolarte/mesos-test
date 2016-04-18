@@ -6,6 +6,11 @@ The example we implemented is [Problem #8](https://projecteuler.net/problem=8) f
 
 ## The short of it
 
+     mvn package
+     cd vm
+     vagrant up
+     vagrant ssh -c "/vagrant/run-framework"
+
 These commands will:
 * Build the framework jar. Jar is copied to a location accessible by the VM
 * Start up a stock CentOS VM and install Apache Mesos and dependencies
@@ -14,13 +19,6 @@ These commands will:
 * The output will printed shortly before the framework finishes executing
 
 
-
-    mvn package
-    cd vm
-    vagrant up
-    vagrant ssh -c "/vagrant/run-framework"
-
-    
 
 The final output will look like this:
 
