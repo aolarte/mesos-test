@@ -58,65 +58,61 @@ public class TestScheduler implements Scheduler {
     public void resourceOffers(SchedulerDriver driver,
                                List<Protos.Offer> offers) {
 
-
         for (Protos.Offer offer : offers) {
             reviewOfferAndLaunchTask(driver, offer);
         }
     }
 
     private void reviewOfferAndLaunchTask(SchedulerDriver driver, Protos.Offer offer) {
-
-
         LOGGER.info(
                 "Received offer from slave: " + offer.getSlaveId());
-
-
         if (launchedTasks < largestProductCoordinator.getTotalTasks()) {
-            Request request = largestProductCoordinator.createRequest(launchedTasks);
-            Protos.Offer.Operation.Launch.Builder launch = Protos.Offer.Operation.Launch.newBuilder();
-
-            Protos.TaskID taskId = Protos.TaskID.newBuilder()
-                    .setValue(Integer.toString(launchedTasks++)).build();
-
-            LOGGER.info("Launching task " + taskId.getValue() +
-                    " using offer " + offer.getId().getValue());
-
-            Protos.TaskInfo task = Protos.TaskInfo.newBuilder()
-                    .setName("task " + taskId.getValue())
-                    .setTaskId(taskId)
-                    .setSlaveId(offer.getSlaveId())
-                    .addResources(Protos.Resource.newBuilder()
-                            .setName("cpus")
-                            .setType(Protos.Value.Type.SCALAR)
-                            .setScalar(Protos.Value.Scalar.newBuilder().setValue(CPUS_PER_TASK)))
-                    .addResources(Protos.Resource.newBuilder()
-                            .setName("mem")
-                            .setType(Protos.Value.Type.SCALAR)
-                            .setScalar(Protos.Value.Scalar.newBuilder().setValue(MEM_PER_TASK)))
-                    .setExecutor(Protos.ExecutorInfo.newBuilder(executor))
-                    .setData(ByteStringUtils.toByteString(request))
-                    .build();
-
-            launch.addTaskInfos(Protos.TaskInfo.newBuilder(task));
-            List<Protos.OfferID> offerIds = new ArrayList<>();
-            offerIds.add(offer.getId());
-
-            List<Protos.Offer.Operation> operations = new ArrayList<>();
-
-            Protos.Offer.Operation operation = Protos.Offer.Operation.newBuilder()
-                    .setType(Protos.Offer.Operation.Type.LAUNCH)
-                    .setLaunch(launch)
-                    .build();
-
-            operations.add(operation);
-
-            Protos.Filters filters = Protos.Filters.newBuilder().setRefuseSeconds(1).build();
-
-            driver.acceptOffers(offerIds, operations, filters);
-
+            launchTask(driver, offer);
         }
+    }
 
+    private void launchTask(SchedulerDriver driver, Protos.Offer offer) {
+        Request request = largestProductCoordinator.createRequest(launchedTasks);
+        Protos.Offer.Operation.Launch.Builder launch = Protos.Offer.Operation.Launch.newBuilder();
 
+        Protos.TaskID taskId = Protos.TaskID.newBuilder()
+                .setValue(Integer.toString(launchedTasks++)).build();
+
+        LOGGER.info("Launching task " + taskId.getValue() +
+                " using offer " + offer.getId().getValue());
+
+        Protos.TaskInfo task = Protos.TaskInfo.newBuilder()
+                .setName("task " + taskId.getValue())
+                .setTaskId(taskId)
+                .setSlaveId(offer.getSlaveId())
+                .addResources(Protos.Resource.newBuilder()
+                        .setName("cpus")
+                        .setType(Protos.Value.Type.SCALAR)
+                        .setScalar(Protos.Value.Scalar.newBuilder().setValue(CPUS_PER_TASK)))
+                .addResources(Protos.Resource.newBuilder()
+                        .setName("mem")
+                        .setType(Protos.Value.Type.SCALAR)
+                        .setScalar(Protos.Value.Scalar.newBuilder().setValue(MEM_PER_TASK)))
+                .setExecutor(Protos.ExecutorInfo.newBuilder(executor))
+                .setData(ByteStringUtils.toByteString(request))
+                .build();
+
+        launch.addTaskInfos(Protos.TaskInfo.newBuilder(task));
+        List<Protos.OfferID> offerIds = new ArrayList<>();
+        offerIds.add(offer.getId());
+
+        List<Protos.Offer.Operation> operations = new ArrayList<>();
+
+        Protos.Offer.Operation operation = Protos.Offer.Operation.newBuilder()
+                .setType(Protos.Offer.Operation.Type.LAUNCH)
+                .setLaunch(launch)
+                .build();
+
+        operations.add(operation);
+
+        Protos.Filters filters = Protos.Filters.newBuilder().setRefuseSeconds(1).build();
+
+        driver.acceptOffers(offerIds, operations, filters);
     }
 
     @Override
